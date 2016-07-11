@@ -29,10 +29,12 @@ class VideoLink
         }
 
         $this->uri     = $uri;
+        //创建客户端
         $this->client  = new Client([
             'cookie'          => true,
             'allow_redirects' => false,
-            'base_uri'        => 'https://laracasts.com',
+            'base_uri'        => 'https://laracasts.com/',
+           // 'timeout'         => 2.0,
         ]);
         $this->config  = require 'config.php';
         $this->options = [
@@ -61,9 +63,12 @@ class VideoLink
 
         $crawler   = new Crawler((string) $res->getBody());
         $down_link = $crawler->filter('.utility-naked-list >li >a')->attr('href');
-
         $res      = $this->get($down_link);
+
+
+         var_dump($res->getHeader('Content-Length'));
         $redirect = $res->getHeader('Location')[0];
+        die(var_dump($redirect));
 
         $res      = $this->get($redirect);
         $redirect = $res->getHeader('Location')[0];
